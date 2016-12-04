@@ -1,0 +1,801 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="docker," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="docker安装简略教程本文不涉及任何Docker技术解释，纯粹只marr以下docker小白的环境安装过程及相应常用的命令。对于docker小白的我来说，Dockerfile、镜像、容器三者之间的关系是比较困扰。
+docker的图标一头驮着很多集装箱的鲸鱼，大意上可以解释为Dockerfile是面向开发者，开发者编写相应的Dockerfile文件构建所需的镜像，也就是镜像是交付的标准，由镜像运行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker on Windows">
+<meta property="og:url" content="http://yoursite.com/2016/12/04/docker-on-Windows/index.html">
+<meta property="og:site_name" content="Flynn's Blog">
+<meta property="og:description" content="docker安装简略教程本文不涉及任何Docker技术解释，纯粹只marr以下docker小白的环境安装过程及相应常用的命令。对于docker小白的我来说，Dockerfile、镜像、容器三者之间的关系是比较困扰。
+docker的图标一头驮着很多集装箱的鲸鱼，大意上可以解释为Dockerfile是面向开发者，开发者编写相应的Dockerfile文件构建所需的镜像，也就是镜像是交付的标准，由镜像运行">
+<meta property="og:image" content="http://c.hiphotos.baidu.com/baike/crop%3D0%2C156%2C1354%2C894%3Bc0%3Dbaike180%2C5%2C5%2C180%2C60/sign=c97c7c9b9b13b07ea9f20a4831e7bd12/f703738da977391281957edbf0198618377ae2dd.jpg">
+<meta property="og:updated_time" content="2016-12-04T10:42:17.593Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="docker on Windows">
+<meta name="twitter:description" content="docker安装简略教程本文不涉及任何Docker技术解释，纯粹只marr以下docker小白的环境安装过程及相应常用的命令。对于docker小白的我来说，Dockerfile、镜像、容器三者之间的关系是比较困扰。
+docker的图标一头驮着很多集装箱的鲸鱼，大意上可以解释为Dockerfile是面向开发者，开发者编写相应的Dockerfile文件构建所需的镜像，也就是镜像是交付的标准，由镜像运行">
+<meta name="twitter:image" content="http://c.hiphotos.baidu.com/baike/crop%3D0%2C156%2C1354%2C894%3Bc0%3Dbaike180%2C5%2C5%2C180%2C60/sign=c97c7c9b9b13b07ea9f20a4831e7bd12/f703738da977391281957edbf0198618377ae2dd.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/12/04/docker-on-Windows/"/>
+
+
+
+
+
+  <title> docker on Windows | Flynn's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Flynn's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">天下事有难易乎？为之，则难者亦易矣；不为，则易者亦难矣.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/index.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/04/docker-on-Windows/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="flynn">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Flynn's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Flynn's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                docker on Windows
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-04T15:11:58+08:00">
+                2016-12-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/容器/" itemprop="url" rel="index">
+                    <span itemprop="name">容器</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="docker安装简略教程"><a href="#docker安装简略教程" class="headerlink" title="docker安装简略教程"></a>docker安装简略教程</h2><p>本文不涉及任何Docker技术解释，纯粹只marr以下docker小白的环境安装过程及相应常用的命令。对于docker小白的我来说，Dockerfile、镜像、容器三者之间的关系是比较困扰。</p>
+<p>docker的图标一头驮着很多集装箱的鲸鱼，大意上可以解释为Dockerfile是面向开发者，开发者编写相应的Dockerfile文件构建所需的镜像，也就是镜像是交付的标准，由镜像运行容器，容器就等同于图标中的集装箱。</p>
+<p>简单来讲，Dockerfile构建出Docker镜像，通过Docker镜像运行Docker容器。</p>
+<p><img src="http://c.hiphotos.baidu.com/baike/crop%3D0%2C156%2C1354%2C894%3Bc0%3Dbaike180%2C5%2C5%2C180%2C60/sign=c97c7c9b9b13b07ea9f20a4831e7bd12/f703738da977391281957edbf0198618377ae2dd.jpg" alt="文章图标" title="docker"></p>
+<a id="more"></a>
+<h3 id="搭建基本过程"><a href="#搭建基本过程" class="headerlink" title="搭建基本过程"></a>搭建基本过程</h3><ul>
+<li>win7 &amp; virtualbox中搭载Centos7</li>
+<li>安装Docker Engine</li>
+<li>安装Docker Compose</li>
+<li>拉取Hello Word镜像，UP</li>
+</ul>
+<h4 id="win7-amp-virtualbox中搭载Centos7"><a href="#win7-amp-virtualbox中搭载Centos7" class="headerlink" title="win7 &amp; virtualbox中搭载Centos7"></a>win7 &amp; virtualbox中搭载Centos7</h4><p>在win系统中安装virtualbox及搭载Centos7系统于安装普通软件无异，其中需注意Centos7建议安装精简无GUI版本，两者下载地址如下：</p>
+<ul>
+<li><a href="https://mirror.tuna.tsinghua.edu.cn/centos/7.2.1511/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso" target="_blank" rel="external">清华大学开源软件镜像站 Centos7 ISO下载</a></li>
+<li><a href="http://download.virtualbox.org/virtualbox/5.1.10/VirtualBox-5.1.10-112026-Win.exe" target="_blank" rel="external">VirtualBox 5.1.10 官网下载</a></li>
+</ul>
+<p><strong><em>注意：在virtualbox 设置中:</em></strong></p>
+<ul>
+<li>在<strong>网络</strong>选项给Centos虚拟机分配两张网卡，类型为<font color="#FF0000" size="0px">NAT</font>(<code>并且添加端口转发，子系统端口22用于SSH登陆虚拟机</code>) 和 <font color="#FF0000" size="0px">Host-Only</font>。</li>
+<li>设置挂载共享目录，也可用XFTP在宿主机与虚拟机共享文件。</li>
+<li>为虚拟机分配3~4G内存，避免容器启动内存不足启动失败。</li>
+<li><p>为了避免使用yum命令下载过慢，提前将yum源切换成国内的，例如163源。</p>
+<ul>
+<li><p>先安装wget避免提示bash 无该命令</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ yum install wget</div></pre></td></tr></table></figure>
+</li>
+<li><p>备份原REPO文件</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</div></pre></td></tr></table></figure>
+</li>
+<li><p>跳转至repo目录</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> /etc/yum.repos.d/</div></pre></td></tr></table></figure>
+</li>
+<li><p>获取网易163 repo文件</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ wget http://mirrors.163.com/.help/CentOS7-Base-163.repo</div></pre></td></tr></table></figure>
+</li>
+<li><p>重新生成yum缓存并更新软件</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ wget http://mirrors.163.com/.help/CentOS7-Base-163.repo</div><div class="line"></div><div class="line">$ yum update</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="安装Docker-Engine"><a href="#安装Docker-Engine" class="headerlink" title="安装Docker Engine"></a>安装Docker Engine</h3><p>docker engine安装方法有两种，都是根据<a href="https://docs.docker.com/engine/installation/linux/centos/" target="_blank" rel="external">DOCKER官网</a>过程结合自己遇到的坑翻译过来，各位看官见仁见智地参考吧。</p>
+<h4 id="Install-with-yum"><a href="#Install-with-yum" class="headerlink" title="Install with yum"></a>Install with yum</h4><ul>
+<li><p>添加 docker 的 repo(<code>复制下面命令直接enter执行就ok</code>)</p>
+<pre><code>sudo tee /etc/yum.repos.d/docker.repo &lt;&lt;-&apos;EOF&apos;
+[dockerrepo]
+name=Docker Repository
+baseurl=https://yum.dockerproject.org/repo/main/centos/7/
+enabled=1
+gpgcheck=1
+gpgkey=https://yum.dockerproject.org/gpg
+EOF
+</code></pre></li>
+<li><p>安装docker包</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo yum install docker-engine</div></pre></td></tr></table></figure>
+<p>  如果提示docker-engine package不存在，直接执行</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo yum install docker</div></pre></td></tr></table></figure>
+</li>
+<li><p>添加自定义系统服务 docker.service</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo systemctl <span class="built_in">enable</span> docker.service</div></pre></td></tr></table></figure>
+</li>
+<li><p>启动docker(<code>守护进程</code>)</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo systemctl start docker</div></pre></td></tr></table></figure>
+</li>
+<li><p>设置docker开机自启动</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ systemctl <span class="built_in">enable</span> docker</div></pre></td></tr></table></figure>
+</li>
+<li><p>校验docker-engine安装是否成功</p>
+<p>  拉取测试镜像hello-world验证:</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo docker run --rm hello-world</div></pre></td></tr></table></figure>
+<p>  如果输入如下信息则说明docker-engine安装成功:</p>
+<pre><code>Unable to find image &apos;hello-world:latest&apos; locally
+ latest: Pulling from library/hello-world
+ c04b14da8d14: Pull complete
+ Digest: sha256:0256e8a36e2070f7bf2d0b0763dbabdd67798512411de4cdcf9431a1feb60fd9
+ Status: Downloaded newer image for hello-world:latest
+ Hello from Docker!
+ This message shows that your installation appears to be working correctly.
+
+ To generate this message, Docker took the following steps:
+     1. The Docker client contacted the Docker daemon.
+      2. The Docker daemon pulled the &quot;hello-world&quot; image from the Docker Hub.
+      3. The Docker daemon created a new container from that image which runs    the executable that produces the output you are currently reading.
+      4. The Docker daemon streamed that output to the Docker client, which sent it
+     to your terminal.
+
+ To try something more ambitious, you can run an Ubuntu container with:
+  $ docker run -it ubuntu bash
+
+ Share images, automate workflows, and more with a free Docker Hub account:
+  https://hub.docker.com
+
+ For more examples and ideas, visit:
+  https://docs.docker.com/engine/userguide/
+</code></pre></li>
+</ul>
+<h4 id="添加-docker-用户组"><a href="#添加-docker-用户组" class="headerlink" title="添加 docker 用户组"></a>添加 docker 用户组</h4><p>由于docker守护进程没有使用TCP而是绑定了unix socket端口，但是Unix socket只能被root用户使用，其他用户只能通过sudo才能使用。所以为了避免不必要的麻烦，创建个unix用户组docker并把你常用的用户添加到该组中。</p>
+<ul>
+<li><p>创建组</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo groupadd docker</div></pre></td></tr></table></figure>
+</li>
+<li><p>将当前用户添加入docker组</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ usermod <span class="_">-a</span>G docker <span class="variable">$&#123;USER&#125;</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="配置-docker-registry"><a href="#配置-docker-registry" class="headerlink" title="配置 docker registry"></a>配置 docker registry</h4><p>这是天朝网络的限制带来的小弊端，避免后期使用docker拉取镜像的时候，慢得像蜗牛，可以采用某些加速器或局域网私服，本人用daocloud 的加速器, 至于daocloud我也懒得注册，就直接在网上各种博客找了个大咖的daocloud id使用了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl <span class="_">-s</span>SL https://get.daocloud.io/daotools/set_mirror.sh | sh <span class="_">-s</span> http://你自己的daoid.m.daocloud.io</div></pre></td></tr></table></figure>
+<h3 id="安装docker-compose"><a href="#安装docker-compose" class="headerlink" title="安装docker compose"></a>安装docker compose</h3><p>建议通过python-pip进行安装docker compose, 其中python-pip又有两种安装方法</p>
+<h4 id="安装Python-pip"><a href="#安装Python-pip" class="headerlink" title="安装Python-pip"></a>安装Python-pip</h4><ul>
+<li><p>wget安装法:</p>
+<pre><code>wget https://bootstrap.pypa.io/get-pip.py --no-check-certificate 
+python get-pip.py
+</code></pre></li>
+<li><p>yum安装法</p>
+<ul>
+<li><p>首先安装epel扩展源：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo yum -y install epel-release</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装pip</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo yum -y install python-pip</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="通过pip安装docker-compose"><a href="#通过pip安装docker-compose" class="headerlink" title="通过pip安装docker compose"></a>通过pip安装docker compose</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install docker-compose</div></pre></td></tr></table></figure>
+<p>测试docker-compose是否安装成功：</p>
+<pre><code>$ docker-compose --version
+ docker-compose version: 1.9.0
+</code></pre><h3 id="docker常用命令"><a href="#docker常用命令" class="headerlink" title="docker常用命令"></a>docker常用命令</h3><p>一切技术都是人偷懒的工具，docker也不例外，都是工具不用它就是遗留在角落的朽木，所以常用命令直接mark下链接，以后用的时候看。</p>
+<p><a href="http://blog.csdn.net/wsscy2004/article/details/25878363" target="_blank" rel="external">常用docker命令，及一些坑</a></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>英语是硬伤，在此非常感谢我项目团队成员对我的帮助，有前人的引路，才会少踩很多坑，thanks。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/04/hexo-github-搭建博客/" rel="next" title="hexo + github  搭建博客">
+                <i class="fa fa-chevron-left"></i> hexo + github  搭建博客
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="flynn" />
+          <p class="site-author-name" itemprop="name">flynn</p>
+          <p class="site-description motion-element" itemprop="description">爬的还是山,喝的还是水,敲的还是键盘,跪的不是搓衣板</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#docker安装简略教程"><span class="nav-number">1.</span> <span class="nav-text">docker安装简略教程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#搭建基本过程"><span class="nav-number">1.1.</span> <span class="nav-text">搭建基本过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#win7-amp-virtualbox中搭载Centos7"><span class="nav-number">1.1.1.</span> <span class="nav-text">win7 & virtualbox中搭载Centos7</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Docker-Engine"><span class="nav-number">1.2.</span> <span class="nav-text">安装Docker Engine</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Install-with-yum"><span class="nav-number">1.2.1.</span> <span class="nav-text">Install with yum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加-docker-用户组"><span class="nav-number">1.2.2.</span> <span class="nav-text">添加 docker 用户组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-docker-registry"><span class="nav-number">1.2.3.</span> <span class="nav-text">配置 docker registry</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装docker-compose"><span class="nav-number">1.3.</span> <span class="nav-text">安装docker compose</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Python-pip"><span class="nav-number">1.3.1.</span> <span class="nav-text">安装Python-pip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过pip安装docker-compose"><span class="nav-number">1.3.2.</span> <span class="nav-text">通过pip安装docker compose</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker常用命令"><span class="nav-number">1.4.</span> <span class="nav-text">docker常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">flynn</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
