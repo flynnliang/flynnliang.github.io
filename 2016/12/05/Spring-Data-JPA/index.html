@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="刘伯温," />
+  <meta name="keywords" content="spring-data-jpa," />
 
 
 
@@ -84,18 +84,33 @@
 
 
 
-<meta name="description" content="若在往时，读《帝王师*刘伯温》，必当将他视为赛诸葛的神算子，读后的心中必定是为其能力上的膜拜与人生结局的惋惜。但，此时此景，回想自己的近况，心中”随性随心，纵使天下欺我”，不甘，不屈等撞击得更为猛烈。">
+<meta name="description" content="Spring-Data-JPA简介数据持久层的基本CRUD操作，只声明下面一个接口就搞定，这就是Spring-Data-JPA
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserDAO extends JpaRepository&amp;lt;User, String&amp;gt; {
+}
+没有">
 <meta property="og:type" content="article">
-<meta property="og:title" content="随性随心，纵使天下欺我">
-<meta property="og:url" content="http://yoursite.com/2016/12/04/随性随心，纵使天下欺我/index.html">
+<meta property="og:title" content="Spring Data JPA">
+<meta property="og:url" content="http://yoursite.com/2016/12/05/Spring-Data-JPA/index.html">
 <meta property="og:site_name" content="Flynn's Blog">
-<meta property="og:description" content="若在往时，读《帝王师*刘伯温》，必当将他视为赛诸葛的神算子，读后的心中必定是为其能力上的膜拜与人生结局的惋惜。但，此时此景，回想自己的近况，心中”随性随心，纵使天下欺我”，不甘，不屈等撞击得更为猛烈。">
-<meta property="og:image" content="http://imgnews.gmw.cn/attachement/jpg/site2/20160504/7856052205133084302.jpg">
-<meta property="og:updated_time" content="2016-12-04T13:08:26.378Z">
+<meta property="og:description" content="Spring-Data-JPA简介数据持久层的基本CRUD操作，只声明下面一个接口就搞定，这就是Spring-Data-JPA
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserDAO extends JpaRepository&amp;lt;User, String&amp;gt; {
+}
+没有">
+<meta property="og:image" content="http://www.yiibai.com/uploads/allimg/141108/192R64962-0.png">
+<meta property="og:updated_time" content="2016-12-05T16:06:03.213Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="随性随心，纵使天下欺我">
-<meta name="twitter:description" content="若在往时，读《帝王师*刘伯温》，必当将他视为赛诸葛的神算子，读后的心中必定是为其能力上的膜拜与人生结局的惋惜。但，此时此景，回想自己的近况，心中”随性随心，纵使天下欺我”，不甘，不屈等撞击得更为猛烈。">
-<meta name="twitter:image" content="http://imgnews.gmw.cn/attachement/jpg/site2/20160504/7856052205133084302.jpg">
+<meta name="twitter:title" content="Spring Data JPA">
+<meta name="twitter:description" content="Spring-Data-JPA简介数据持久层的基本CRUD操作，只声明下面一个接口就搞定，这就是Spring-Data-JPA
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserDAO extends JpaRepository&amp;lt;User, String&amp;gt; {
+}
+没有">
+<meta name="twitter:image" content="http://www.yiibai.com/uploads/allimg/141108/192R64962-0.png">
 
 
 
@@ -123,13 +138,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/12/04/随性随心，纵使天下欺我/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/12/05/Spring-Data-JPA/"/>
 
 
 
 
 
-  <title> 随性随心，纵使天下欺我 | Flynn's Blog </title>
+  <title> Spring Data JPA | Flynn's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -270,7 +285,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/04/随性随心，纵使天下欺我/">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/05/Spring-Data-JPA/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="flynn">
@@ -294,7 +309,7 @@
             
             
               
-                随性随心，纵使天下欺我
+                Spring Data JPA
               
             
           </h1>
@@ -307,8 +322,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-04T19:13:24+08:00">
-                2016-12-04
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-05T22:02:53+08:00">
+                2016-12-05
               </time>
             
 
@@ -326,8 +341,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/读后感/" itemprop="url" rel="index">
-                    <span itemprop="name">读后感</span>
+                  <a href="/categories/框架/" itemprop="url" rel="index">
+                    <span itemprop="name">框架</span>
                   </a>
                 </span>
 
@@ -361,26 +376,72 @@
       
 
       
-        <p>若在往时，读《帝王师*刘伯温》，必当将他视为赛诸葛的神算子，读后的心中必定是为其能力上的膜拜与人生结局的惋惜。但，此时此景，回想自己的近况，心中”随性随心，纵使天下欺我”，不甘，不屈等撞击得更为猛烈。</p>
-<p><img src="http://imgnews.gmw.cn/attachement/jpg/site2/20160504/7856052205133084302.jpg" alt="文章图标" title="刘伯温"></p>
-<a id="more"></a>
-<p>没有哪本书能百分百客观讲人叙事，因为作者都是人，人生来都有各种念想，就算书面上的圣人，也只是能控制念想而非磨灭，所以我也不知道帝王师中讲述的刘伯温，有几分真或又有几分假。每个作者都有他码文字的目的，例如我只是借书打发时间，码字释放情绪。不过书中所述的刘伯温生平倒是没有偏离所谓的历史，其中也为了迎合各类读者，在保证大致方向的前提下，在细节描述方面偶尔参杂了野史及民间神怪之说。全书读起来的感觉，还是可能接受，个人传记式予以故事性。</p>
-<p>去掉那些光怪陆离的故事，刘的人生历程：</p>
-<ul>
-<li>少年天才</li>
-<li>求学的青年才俊 </li>
-<li>一心施展抱负的元朝官员，却因当局趋势及个人耿直性格而处处受阻</li>
-<li>无奈游学</li>
-<li>朱元璋所需定天下的诸葛，治天下的导师</li>
-<li>朱元璋所惧所弃的老头</li>
-</ul>
-<p>刘伯温如果在现代，可能未被别人认可为大咖之前，铁定也是被冠上怪咖的头衔。</p>
-<p>当时势选择了刘伯温，他的才能被无限放大及施展，耿直的性格及一是一的处事风格也促其叙写堪比诸葛的史话；但当时势弃他时，才能不再是当局或朱元璋所需时，他的一是一在别人眼里成了冥顽不灵，他耿直成了他人嘴里的孤傲。</p>
-<p>故而，你是否是别人所需，是否愿意适时变成别人所需而委屈改变自己，我说NO！</p>
-<p>既然时不待我，那我为何不可时时储势以待待我之时。刘伯温从理论上说是遵循道学，到被时势所弃终将入土的几年深谙道学的道法自然，放下了。所以，既然违心不快，为何不随性随心，纵使天下欺我，必有待我之时之士。</p>
-<p>人本生来未带一物，有些人都以加法去活着，追逐的事物越来越多，末了遗憾登也平添许多。倒不如倒过来，以减法的方式，愿望池原来越小，遗憾簿慢慢变薄，能到头来一生只忠于一事的快哉。</p>
-<p>随心随性地努力着。</p>
+        <h2 id="Spring-Data-JPA简介"><a href="#Spring-Data-JPA简介" class="headerlink" title="Spring-Data-JPA简介"></a>Spring-Data-JPA简介</h2><p>数据持久层的基本CRUD操作，只声明下面一个接口就搞定，这就是Spring-Data-JPA</p>
+<pre><code>import org.springframework.data.jpa.repository.JpaRepository;
 
+public interface UserDAO extends JpaRepository&lt;User, String&gt; {
+}
+</code></pre><p>没有Impl，没有SQL，没有XML，就是那么懒！！</p>
+<p><img src="http://www.yiibai.com/uploads/allimg/141108/192R64962-0.png" alt="文章图标" title="Java Persistence API"></p>
+<a id="more"></a>
+<p>它是懒人利器的理由:</p>
+<ul>
+<li><p>基本CRUD操作，它有了：</p>
+<pre><code>public interface JpaRepository&lt;T, ID extends Serializable&gt;
+    extends PagingAndSortingRepository&lt;T, ID&gt;, QueryByExampleExecutor&lt;T&gt; {
+
+        List&lt;T&gt; findAll();
+
+        List&lt;T&gt; findAll(Sort sort);
+
+        List&lt;T&gt; findAll(Iterable&lt;ID&gt; ids);
+
+        &lt;S extends T&gt; List&lt;S&gt; save(Iterable&lt;S&gt; entities);
+
+        void flush();
+
+        &lt;S extends T&gt; S saveAndFlush(S entity);
+
+        void deleteInBatch(Iterable&lt;T&gt; entities);
+
+        void deleteAllInBatch();
+
+        T getOne(ID id);
+
+        @Override
+        &lt;S extends T&gt; List&lt;S&gt; findAll(Example&lt;S&gt; example);
+
+        @Override
+        &lt;S extends T&gt; List&lt;S&gt; findAll(Example&lt;S&gt; example, Sort sort);
+}
+</code></pre></li>
+<li><p>通过规范的方法名解析创建查询</p>
+<pre><code>public interface UserDAO extends JpaRepository&lt;User, String&gt; {
+    //通过用户名查找用户
+    User findByName(String name);
+    //通过用户名和密码查询用户
+    User findByNameAndPassword(String userName, String password);
+}
+</code></pre></li>
+<li><p>通过相应注解创建个性化查询</p>
+<pre><code>@Modifying 
+@Transactional
+ @Query(&quot;update user a set a.passwd = ?1 where a.uuid = ?2&quot;) 
+ public int updateUserPasswd(String ps, String uuid);
+</code></pre></li>
+</ul>
+<p>当然还有其他的，只是目前未深入使用。</p>
+<p>JPA是一种ORM(<code>Object Relation Mapping</code>)框架,全称是Java Persistence API,可以通过@注解或者XML方式，实现对象与数据库表间的映射，将运行期的对象持久化到数据库中，Spring的生态圈不可能不把这家伙吸纳了。</p>
+<h3 id="Sring-Data-JPA能帮我们偷啥懒"><a href="#Sring-Data-JPA能帮我们偷啥懒" class="headerlink" title="Sring-Data-JPA能帮我们偷啥懒"></a>Sring-Data-JPA能帮我们偷啥懒</h3><p>Mybatis(Ibatis)和hibernate或原生的JDBC相信Java程序员都熟悉不少，不管它们多优秀，开发者都难免都还摆脱不了SQL编写或者持久层的业务逻辑处理这块敲不少代码。在此不是要挑起战争，只能说着重点不同，纯粹是在懒人的角度看待Spring-Data-JPA，它让我少了不少事:</p>
+<ul>
+<li>不需要费精力写sql</li>
+<li>不需要关注EntityManager 的创建</li>
+<li>不需要关注事物处理</li>
+<li>不需要关注持久层核心业务处理</li>
+</ul>
+<p>你的持久层方面没了SQL 没有XML，你需要做的声明持久层接口并选择性集成它的接口，搞定解决一切，是不是懒得可以。</p>
+<h2 id="Spring-Data-JPA-咋用"><a href="#Spring-Data-JPA-咋用" class="headerlink" title="Spring-Data-JPA 咋用"></a>Spring-Data-JPA 咋用</h2><p>为啥它能那么强悍，我脑容量很小，对待框架，只有出现莫名其妙Bug、Boss大发慈悲的时候有空发呆，这两种情况才会去看源码，所以平时会用，用得好足矣。</p>
+<h3 id="根基–数据库Model"><a href="#根基–数据库Model" class="headerlink" title="根基–数据库Model"></a>根基–数据库Model</h3><h3 id="CRUD-操作"><a href="#CRUD-操作" class="headerlink" title="CRUD 操作"></a>CRUD 操作</h3><h4 id="R-查询操作"><a href="#R-查询操作" class="headerlink" title="R 查询操作"></a>R 查询操作</h4><h4 id="CUD数据变更操作"><a href="#CUD数据变更操作" class="headerlink" title="CUD数据变更操作"></a>CUD数据变更操作</h4><h3 id="事物"><a href="#事物" class="headerlink" title="事物"></a>事物</h3>
       
     </div>
 
@@ -403,7 +464,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/刘伯温/" rel="tag"># 刘伯温</a>
+            <a href="/tags/spring-data-jpa/" rel="tag"># spring-data-jpa</a>
           
         </div>
       
@@ -412,8 +473,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/04/docker-on-Windows/" rel="next" title="docker on Windows">
-                <i class="fa fa-chevron-left"></i> docker on Windows
+              <a href="/2016/12/04/随性随心，纵使天下欺我/" rel="next" title="随性随心，纵使天下欺我">
+                <i class="fa fa-chevron-left"></i> 随性随心，纵使天下欺我
               </a>
             
           </div>
@@ -421,10 +482,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/12/05/Spring-Data-JPA/" rel="prev" title="Spring Data JPA">
-                Spring Data JPA <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -471,8 +528,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -525,6 +591,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Data-JPA简介"><span class="nav-number">1.</span> <span class="nav-text">Spring-Data-JPA简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sring-Data-JPA能帮我们偷啥懒"><span class="nav-number">1.1.</span> <span class="nav-text">Sring-Data-JPA能帮我们偷啥懒</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Data-JPA-咋用"><span class="nav-number">2.</span> <span class="nav-text">Spring-Data-JPA 咋用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#根基–数据库Model"><span class="nav-number">2.1.</span> <span class="nav-text">根基–数据库Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CRUD-操作"><span class="nav-number">2.2.</span> <span class="nav-text">CRUD 操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#R-查询操作"><span class="nav-number">2.2.1.</span> <span class="nav-text">R 查询操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CUD数据变更操作"><span class="nav-number">2.2.2.</span> <span class="nav-text">CUD数据变更操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事物"><span class="nav-number">2.3.</span> <span class="nav-text">事物</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
     </div>
