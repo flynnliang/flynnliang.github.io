@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="markdown," />
+  <meta name="keywords" content="AQS," />
 
 
 
@@ -84,18 +84,23 @@
 
 
 
-<meta name="description" content="Welcome to MarkdownPad 2">
+<meta name="description" content="JDK Concurrent基础类之AQS操作解析100行代码抛砖引玉，基本上用到了java.util.concurrent的几个基于AbstractQueuedSynchronizer实现的几个常用类。其中以6种方式实现了计数(公司同事加班点餐报数i++统计人数抽象出来的)。在高并发下，OrderType枚举中的前两者并不能保证计数的原子性；
+本文将在该demo为引子，大致说道下自己对JUC的少">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MarkdownPad">
-<meta property="og:url" content="http://yoursite.com/2016/12/03/markdown-test/index.html">
+<meta property="og:title" content="JUC之AQS操作解析">
+<meta property="og:url" content="http://yoursite.com/2017/03/02/JUC之AQS操作解析/index.html">
 <meta property="og:site_name" content="Flynn's Blog">
-<meta property="og:description" content="Welcome to MarkdownPad 2">
-<meta property="og:image" content="http://www.onethink.cn/Uploads/Editor/2013-12-13/52aaabb4e7486.png">
-<meta property="og:updated_time" content="2016-12-07T13:46:02.615Z">
+<meta property="og:description" content="JDK Concurrent基础类之AQS操作解析100行代码抛砖引玉，基本上用到了java.util.concurrent的几个基于AbstractQueuedSynchronizer实现的几个常用类。其中以6种方式实现了计数(公司同事加班点餐报数i++统计人数抽象出来的)。在高并发下，OrderType枚举中的前两者并不能保证计数的原子性；
+本文将在该demo为引子，大致说道下自己对JUC的少">
+<meta property="og:image" content="http://yoursite.com/source/img/aqs_intru.png">
+<meta property="og:image" content="http://yoursite.com/source/img/aqs_node.png">
+<meta property="og:image" content="http://yoursite.com/source/img/aqs_sem.png">
+<meta property="og:updated_time" content="2017-03-02T01:39:33.588Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MarkdownPad">
-<meta name="twitter:description" content="Welcome to MarkdownPad 2">
-<meta name="twitter:image" content="http://www.onethink.cn/Uploads/Editor/2013-12-13/52aaabb4e7486.png">
+<meta name="twitter:title" content="JUC之AQS操作解析">
+<meta name="twitter:description" content="JDK Concurrent基础类之AQS操作解析100行代码抛砖引玉，基本上用到了java.util.concurrent的几个基于AbstractQueuedSynchronizer实现的几个常用类。其中以6种方式实现了计数(公司同事加班点餐报数i++统计人数抽象出来的)。在高并发下，OrderType枚举中的前两者并不能保证计数的原子性；
+本文将在该demo为引子，大致说道下自己对JUC的少">
+<meta name="twitter:image" content="http://yoursite.com/source/img/aqs_intru.png">
 
 
 
@@ -123,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/12/03/markdown-test/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/03/02/JUC之AQS操作解析/"/>
 
 
 
 
 
-  <title> MarkdownPad | Flynn's Blog </title>
+  <title> JUC之AQS操作解析 | Flynn's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -270,7 +275,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/03/markdown-test/">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/02/JUC之AQS操作解析/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="flynn">
@@ -294,7 +299,7 @@
             
             
               
-                MarkdownPad
+                JUC之AQS操作解析
               
             
           </h1>
@@ -307,8 +312,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-03T12:56:22+08:00">
-                2016-12-03
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-02T09:03:37+08:00">
+                2017-03-02
               </time>
             
 
@@ -326,8 +331,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/markdown/" itemprop="url" rel="index">
-                    <span itemprop="name">markdown</span>
+                  <a href="/categories/JDK源码/" itemprop="url" rel="index">
+                    <span itemprop="name">JDK源码</span>
                   </a>
                 </span>
 
@@ -361,23 +366,152 @@
       
 
       
-        <h2 id="Welcome-to-MarkdownPad-2"><a href="#Welcome-to-MarkdownPad-2" class="headerlink" title="Welcome to MarkdownPad 2"></a>Welcome to MarkdownPad 2</h2><p><img src="http://www.onethink.cn/Uploads/Editor/2013-12-13/52aaabb4e7486.png" alt="文章图标" title="markdown"></p>
-<a id="more"></a>
-<p><strong>MarkdownPad</strong> is 安装docker-featuredfsdfsdfsd Markdown editor for Windows.</p>
-<h3 id="Built-exclusively-for-Markfdsdown"><a href="#Built-exclusively-for-Markfdsdown" class="headerlink" title="Built exclusively for Markfdsdown"></a>Built exclusively for Markfdsdown</h3><p>Enjoy first-class Markdown support with easy access to  Markdown syntax and convenient keyboard shortcuts.</p>
-<p>Give them a try:</p>
-<ul>
-<li><strong>Bold</strong> (<code>Ctrl+B</code>) and <em>Italic</em> (<code>Ctrl+I</code>)</li>
-<li>Quotes (<code>Ctrl+Q</code>)</li>
-<li>Code blocks (<code>Ctrl+K</code>)</li>
-<li>Headings 1, 2, 3 (<code>Ctrl+1</code>, <code>Ctrl+2</code>, <code>Ctrl+3</code>)</li>
-<li>Lists (<code>Ctrl+U</code> and <code>Ctrl+Shift+O</code>)</li>
-</ul>
-<h3 id="See-your-changes-instantly-with-LivePreview"><a href="#See-your-changes-instantly-with-LivePreview" class="headerlink" title="See your changes instantly with LivePreview"></a>See your changes instantly with LivePreview</h3><p>Don’t guess if your <a href="http://markdownpad.com" target="_blank" rel="external">hyperlink syntax</a> is correct; LivePreview will show you exactly what your document looks like every time you press a key.</p>
-<h3 id="Make-it-your-own"><a href="#Make-it-your-own" class="headerlink" title="Make it your own"></a>Make it your own</h3><p>Fonts, color schemes, layouts and stylesheets are all 100% customizable so you can turn MarkdownPad into your perfect editor.</p>
-<h3 id="A-robust-editor-for-advanced-Markdown-users"><a href="#A-robust-editor-for-advanced-Markdown-users" class="headerlink" title="A robust editor for advanced Markdown users"></a>A robust editor for advanced Markdown users</h3><p>MarkdownPad supports multiple Markdown processing engines, including standard Markdown, Markdown Extra (with Table support) and GitHub Flavored Markdown.</p>
-<p>##With a##<br>tabbed document interface, PDF export, a built-in image uploader, session management, spell check, auto-save, syntax highlighting and a built-in CSS management interface, there’s no limit to what you can do with MarkdownPad.</p>
-<p>欢迎来到flynn的技术博客，请多指教</p>
+        <h2 id="JDK-Concurrent基础类之AQS操作解析"><a href="#JDK-Concurrent基础类之AQS操作解析" class="headerlink" title="JDK Concurrent基础类之AQS操作解析"></a>JDK Concurrent基础类之AQS操作解析</h2><p>100行代码抛砖引玉，基本上用到了java.util.concurrent的几个基于AbstractQueuedSynchronizer实现的几个常用类。其中以6种方式实现了计数(公司同事加班点餐报数i++统计人数抽象出来的)。在高并发下，OrderType枚举中的前两者并不能保证计数的原子性；</p>
+<p>本文将在该demo为引子，大致说道下自己对JUC的少许理解，纯是拙见，不足之处请稍微打下马赛克。</p>
+<pre><code>import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class ConciseSample {
+
+private enum OrderType {
+    NO_ATOMIC, VOLATILE, ATOMIC, SYNCHRONIZE, LOCK, SEMAPHORE
+}
+
+public static void main(String[] args) {
+
+    int testOrderCount = 10;
+    final Counter counter = new Counter(OrderType.NO_ATOMIC);
+
+    CountDownLatch startSignal = new CountDownLatch(1);
+    CyclicBarrier cyclicBarrier = new CyclicBarrier(testOrderCount, new Runnable() {
+        public void run() {
+            System.out.println(&quot;the final dinner count: &quot; + counter.getFinalCount());
+        }
+    });
+
+    for (int i = 0; i &lt; testOrderCount; i++) {
+        new Thread(new OrderHandler(counter, startSignal, cyclicBarrier)).start();
+    }
+    startSignal.countDown();
+}
+
+private static class Counter {
+
+    private int count = 0;
+    private ReentrantLock lock;
+    private Semaphore semaphore;
+    private OrderType orderType;
+    private volatile int vCount = 0;
+    private AtomicInteger atomicLong;
+
+    Counter(OrderType orderType) {
+
+        this.orderType = orderType;
+        switch (orderType) {
+            case ATOMIC:
+                this.atomicLong = new AtomicInteger(0);
+                break;
+            case LOCK:
+                this.lock = new ReentrantLock();
+                break;
+            case SEMAPHORE:
+                this.semaphore = new Semaphore(1);
+                break;
+        }
+    }
+
+    private int add() {
+
+        switch (orderType) {
+            case NO_ATOMIC:
+                return ++count;
+            case VOLATILE:
+                return ++vCount;
+            case ATOMIC:
+                return addAtomicOrder();
+            case SYNCHRONIZE:
+                return addOrderBySyn();
+            case LOCK:
+                return addOrderByLock();
+            case SEMAPHORE:
+                return addOrderBySemaphore();
+            default:
+                return ++count;
+        }
+    }
+
+    private int addAtomicOrder() {
+        return atomicLong.incrementAndGet();
+    }
+
+    private int addOrderByLock() {
+        lock.lock();
+        try {
+            return ++count;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private int addOrderBySemaphore() {
+        try {
+            semaphore.acquire();
+            return ++count;
+        } catch (InterruptedException e) {
+            System.out.println(&quot;the error: &quot; + e.getMessage());
+        } finally {
+            semaphore.release();
+        }
+        return 0;
+    }
+
+    private synchronized int addOrderBySyn() {
+        return ++count;
+    }
+
+    private int getFinalCount() {
+        switch (orderType) {
+            case ATOMIC:
+                return atomicLong.getAndIncrement();
+            case VOLATILE:
+                return vCount;
+            default:
+                return count;
+        }
+    }
+}
+
+private static class OrderHandler implements Runnable {
+    private Counter counter;
+    private CountDownLatch startSignal;
+    private CyclicBarrier cyclicBarrier;
+
+    OrderHandler(Counter counter, CountDownLatch startSignal, CyclicBarrier cyclicBarrier) {
+        this.counter = counter;
+        this.startSignal = startSignal;
+        this.cyclicBarrier = cyclicBarrier;
+    }
+
+    public void run() {
+        try {
+            startSignal.await();
+            System.out.println(&quot;the dinner number: &quot; + counter.add());
+            cyclicBarrier.await();
+        } catch (InterruptedException e) {
+            System.out.println(&quot;the error: &quot; + e.getMessage());
+        } catch (BrokenBarrierException e) {
+            System.out.println(&quot;the error: &quot; + e.getMessage());
+        }
+    }
+}
+}
+</code></pre><p>先画下图，以备后面忘记。<br><img src="/source/img/aqs_intru.png" alt="img"></p>
+<p><img src="/source/img/aqs_node.png" alt="img"></p>
+<p><img src="/source/img/aqs_sem.png" alt="img"></p>
 
       
     </div>
@@ -401,7 +535,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/markdown/" rel="tag"># markdown</a>
+            <a href="/tags/AQS/" rel="tag"># AQS</a>
           
         </div>
       
@@ -410,8 +544,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/03/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2016/12/13/前端技术点mark/" rel="next" title="前端技术点mark">
+                <i class="fa fa-chevron-left"></i> 前端技术点mark
               </a>
             
           </div>
@@ -419,10 +553,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/12/04/hexo-github-搭建博客/" rel="prev" title="hexo + github  搭建博客">
-                hexo + github  搭建博客 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -542,7 +672,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Welcome-to-MarkdownPad-2"><span class="nav-number">1.</span> <span class="nav-text">Welcome to MarkdownPad 2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Built-exclusively-for-Markfdsdown"><span class="nav-number">1.1.</span> <span class="nav-text">Built exclusively for Markfdsdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#See-your-changes-instantly-with-LivePreview"><span class="nav-number">1.2.</span> <span class="nav-text">See your changes instantly with LivePreview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Make-it-your-own"><span class="nav-number">1.3.</span> <span class="nav-text">Make it your own</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-robust-editor-for-advanced-Markdown-users"><span class="nav-number">1.4.</span> <span class="nav-text">A robust editor for advanced Markdown users</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK-Concurrent基础类之AQS操作解析"><span class="nav-number">1.</span> <span class="nav-text">JDK Concurrent基础类之AQS操作解析</span></a></li></ol></div>
             
 
           </div>

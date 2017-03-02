@@ -269,6 +269,402 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/02/JUC之AQS操作解析/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="flynn">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Flynn's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Flynn's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/02/JUC之AQS操作解析/" itemprop="url">
+                  JUC之AQS操作解析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-02T09:03:37+08:00">
+                2017-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JDK源码/" itemprop="url" rel="index">
+                    <span itemprop="name">JDK源码</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="JDK-Concurrent基础类之AQS操作解析"><a href="#JDK-Concurrent基础类之AQS操作解析" class="headerlink" title="JDK Concurrent基础类之AQS操作解析"></a>JDK Concurrent基础类之AQS操作解析</h2><p>100行代码抛砖引玉，基本上用到了java.util.concurrent的几个基于AbstractQueuedSynchronizer实现的几个常用类。其中以6种方式实现了计数(公司同事加班点餐报数i++统计人数抽象出来的)。在高并发下，OrderType枚举中的前两者并不能保证计数的原子性；</p>
+<p>本文将在该demo为引子，大致说道下自己对JUC的少许理解，纯是拙见，不足之处请稍微打下马赛克。</p>
+<pre><code>import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class ConciseSample {
+
+private enum OrderType {
+    NO_ATOMIC, VOLATILE, ATOMIC, SYNCHRONIZE, LOCK, SEMAPHORE
+}
+
+public static void main(String[] args) {
+
+    int testOrderCount = 10;
+    final Counter counter = new Counter(OrderType.NO_ATOMIC);
+
+    CountDownLatch startSignal = new CountDownLatch(1);
+    CyclicBarrier cyclicBarrier = new CyclicBarrier(testOrderCount, new Runnable() {
+        public void run() {
+            System.out.println(&quot;the final dinner count: &quot; + counter.getFinalCount());
+        }
+    });
+
+    for (int i = 0; i &lt; testOrderCount; i++) {
+        new Thread(new OrderHandler(counter, startSignal, cyclicBarrier)).start();
+    }
+    startSignal.countDown();
+}
+
+private static class Counter {
+
+    private int count = 0;
+    private ReentrantLock lock;
+    private Semaphore semaphore;
+    private OrderType orderType;
+    private volatile int vCount = 0;
+    private AtomicInteger atomicLong;
+
+    Counter(OrderType orderType) {
+
+        this.orderType = orderType;
+        switch (orderType) {
+            case ATOMIC:
+                this.atomicLong = new AtomicInteger(0);
+                break;
+            case LOCK:
+                this.lock = new ReentrantLock();
+                break;
+            case SEMAPHORE:
+                this.semaphore = new Semaphore(1);
+                break;
+        }
+    }
+
+    private int add() {
+
+        switch (orderType) {
+            case NO_ATOMIC:
+                return ++count;
+            case VOLATILE:
+                return ++vCount;
+            case ATOMIC:
+                return addAtomicOrder();
+            case SYNCHRONIZE:
+                return addOrderBySyn();
+            case LOCK:
+                return addOrderByLock();
+            case SEMAPHORE:
+                return addOrderBySemaphore();
+            default:
+                return ++count;
+        }
+    }
+
+    private int addAtomicOrder() {
+        return atomicLong.incrementAndGet();
+    }
+
+    private int addOrderByLock() {
+        lock.lock();
+        try {
+            return ++count;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private int addOrderBySemaphore() {
+        try {
+            semaphore.acquire();
+            return ++count;
+        } catch (InterruptedException e) {
+            System.out.println(&quot;the error: &quot; + e.getMessage());
+        } finally {
+            semaphore.release();
+        }
+        return 0;
+    }
+
+    private synchronized int addOrderBySyn() {
+        return ++count;
+    }
+
+    private int getFinalCount() {
+        switch (orderType) {
+            case ATOMIC:
+                return atomicLong.getAndIncrement();
+            case VOLATILE:
+                return vCount;
+            default:
+                return count;
+        }
+    }
+}
+
+private static class OrderHandler implements Runnable {
+    private Counter counter;
+    private CountDownLatch startSignal;
+    private CyclicBarrier cyclicBarrier;
+
+    OrderHandler(Counter counter, CountDownLatch startSignal, CyclicBarrier cyclicBarrier) {
+        this.counter = counter;
+        this.startSignal = startSignal;
+        this.cyclicBarrier = cyclicBarrier;
+    }
+
+    public void run() {
+        try {
+            startSignal.await();
+            System.out.println(&quot;the dinner number: &quot; + counter.add());
+            cyclicBarrier.await();
+        } catch (InterruptedException e) {
+            System.out.println(&quot;the error: &quot; + e.getMessage());
+        } catch (BrokenBarrierException e) {
+            System.out.println(&quot;the error: &quot; + e.getMessage());
+        }
+    }
+}
+}
+</code></pre><p>先画下图，以备后面忘记。<br><img src="/source/img/aqs_intru.png" alt="img"></p>
+<p><img src="/source/img/aqs_node.png" alt="img"></p>
+<p><img src="/source/img/aqs_sem.png" alt="img"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/13/前端技术点mark/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="flynn">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Flynn's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Flynn's Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/13/前端技术点mark/" itemprop="url">
+                  前端技术点mark
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-13T10:28:03+08:00">
+                2016-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/05/Spring-Data-JPA/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -860,7 +1256,7 @@ public interface UserDAO extends JpaRepository&lt;User, String&gt; {
               
                 
                 <a class="post-title-link" href="/2016/12/03/markdown-test/" itemprop="url">
-                  文章标题
+                  MarkdownPad
                 </a>
               
             
@@ -1144,7 +1540,7 @@ public interface UserDAO extends JpaRepository&lt;User, String&gt; {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1152,7 +1548,7 @@ public interface UserDAO extends JpaRepository&lt;User, String&gt; {
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1161,7 +1557,7 @@ public interface UserDAO extends JpaRepository&lt;User, String&gt; {
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1201,7 +1597,7 @@ public interface UserDAO extends JpaRepository&lt;User, String&gt; {
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
